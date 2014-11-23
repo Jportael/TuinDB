@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <servlet>
+        <servlet-name>Index</servlet-name>
+        <servlet-class>Controler.Index</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchPlant</servlet-name>
+        <servlet-class>Controler.SearchPlant</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>editPlant</servlet-name>
+        <servlet-class>Controler.editPlant</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VerwijderFoto</servlet-name>
+        <servlet-class>Controler.VerwijderFoto</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Index</servlet-name>
+        <url-pattern>/Index</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddPlant</servlet-name>
+        <url-pattern>/addplant</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchPlant</servlet-name>
+        <url-pattern>/search</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editPlant</servlet-name>
+        <url-pattern>/editplant</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VerwijderFoto</servlet-name>
+        <url-pattern>/verwijderfoto</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+</web-app>

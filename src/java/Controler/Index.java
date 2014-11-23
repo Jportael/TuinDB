@@ -26,6 +26,7 @@ public class Index extends HttpServlet {
         request.getSession().setAttribute("soorten", Cache.soort);
         request.getSession().setAttribute("groepen", Cache.groep);
         request.getSession().setAttribute("families", Cache.familie);
+        request.getSession().setAttribute("soort_bomen", Cache.soortBoom);
         
         //autocomplete search
         ArrayList<String> zoekTermen = new ArrayList<>();

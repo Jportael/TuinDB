@@ -30,6 +30,7 @@
                 <th>Variëteit</th>
                 <th>Nederlandse naam</th>
                 <th>familie</th>
+                <th>Soort Boom</th>
                 <th>Kleur</th>
                 <th>foto's</th>
                 <th>edit</th>
@@ -44,6 +45,7 @@
                     <td class='clickableRow' href="editplant?plant_id=${plant.getId()}">${plant.getNaam()}</td>
                     <td class='clickableRow' href="editplant?plant_id=${plant.getId()}">${plant.getNldsNaam()}</td>
                     <td class='clickableRow' href="editplant?plant_id=${plant.getId()}">${plant.getFamilieNaam()}</td>
+                    <td class='clickableRow' href="editplant?plant_id=${plant.getId()}">${plant.getSoortBoomNaam()}</td>
                     <td class='clickableRow' href="editplant?plant_id=${plant.getId()}">${plant.getKleur()}</td>
 
 
@@ -52,11 +54,11 @@
                         <c:forEach items="${plant.getFotos()}" var="fotos" end="0">
                             <a class="fancybox" rel="group" href="uploadFiles/${fotos.toString()}"><img class="img-responsive" src=<c:url value="uploadFiles/${fotos.toString()}"/> width="100"></a>
                             </c:forEach> 
-                            <div class="hidden">
+                        <div class="hidden">
                             <c:forEach items="${plant.getFotos()}" var="fotos" begin="1">
-                            <a class="fancybox" rel="group" href="uploadFiles/${fotos.toString()}"><img class="img-responsive" src=<c:url value="uploadFiles/${fotos.toString()}"/> width="100"></a>
-                            </c:forEach> 
-                            </div>
+                                <a class="fancybox" rel="group" href="uploadFiles/${fotos.toString()}"><img class="img-responsive" src=<c:url value="uploadFiles/${fotos.toString()}"/> width="100"></a>
+                                </c:forEach> 
+                        </div>
                     </td>
                     <td class='clickableRow' href="editplant?plant_id=${plant.getId()}">
                         EDIT

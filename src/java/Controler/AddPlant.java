@@ -55,10 +55,13 @@ public class AddPlant extends HttpServlet {
         plantToAdd.setNaam((String) request.getParameter("plant_naam"));
         plantToAdd.setNldsNaam((String) request.getParameter("plant_nlds_naam"));
         plantToAdd.setKleur((String) request.getParameter("plant_kleur"));
-
+        
+        System.out.println(request.getParameter("plant_soort"));
+        
         plantToAdd.setSoort(Categorie.getSoort(request.getParameter("plant_soort")).getId());
         plantToAdd.setGroep(Categorie.getGroep(request.getParameter("plant_groep")).getId());
         plantToAdd.setFamilie(Categorie.getFamilie(request.getParameter("plant_familie")).getId());
+        plantToAdd.setSoortBoom(Categorie.getSoortBoom(request.getParameter("plant_soort_boom")).getId());
 
         try {
             Dao.getDAO().addPlant(plantToAdd);

@@ -9,6 +9,7 @@ import Bean.Familie;
 import Bean.Soort;
 import Bean.Groep;
 import Bean.Plant;
+import Bean.SoortBoom;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -76,9 +77,9 @@ public class Dao {
                 + "`groep_id`,\n"
                 + "`familie_id`,\n"
                 + "`ndls_naam`,\n"
-                + "`kleur`)\n"
+                + "`kleur`, soort_boom_id)\n"
                 + "VALUES\n"
-                + "(?,?,?,?,?,?)";
+                + "(?,?,?,?,?,?,?)";
         try (Connection conn = tuinDB.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(addPlant)) {
 
@@ -88,6 +89,7 @@ public class Dao {
             stmt.setInt(4, plantToAdd.getFamilie());
             stmt.setString(5, plantToAdd.getNldsNaam());
             stmt.setString(6, plantToAdd.getKleur());
+            stmt.setInt(7, plantToAdd.getSoortBoom());
 
             stmt.execute();
         }
@@ -102,7 +104,8 @@ public class Dao {
                 + "`familie_id` = ?,\n"
                 + "`ndls_naam` = ?,\n"
                 + "`kleur` = ?,\n"
-                + "`isActive` = ?\n"
+                + "`isActive` = ?,\n"
+                + "soort_boom_id = ?\n"
                 + "WHERE `id` = ?;";
         try (Connection conn = tuinDB.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(addPlant)) {
@@ -114,8 +117,9 @@ public class Dao {
             stmt.setString(5, plant.getNldsNaam());
             stmt.setString(6, plant.getKleur());
             stmt.setInt(7, plant.getIsActive());
-            stmt.setInt(8, plant.getId());
-            
+            stmt.setInt(8, plant.getSoortBoom());
+            stmt.setInt(9, plant.getId());
+
             System.out.println(stmt.toString());
             stmt.executeUpdate();
 
@@ -152,10 +156,12 @@ public class Dao {
     }
 
     public ArrayList<Plant> getPlants() throws SQLException {
-        String addPlant = "select p.id,p.naam,p.soort_id,p.groep_id,p.familie_id,p.ndls_naam,p.kleur,p.isActive,s.naam,g.naam,f.naam,p.isActive from plant p,soort s,groep g, familie f\n"
+        String addPlant = "select p.id,p.naam,p.soort_id,p.groep_id,p.familie_id,p.ndls_naam,p.kleur,p.isActive,s.naam,g.naam,f.naam,p.isActive,sb.naam,p.soort_boom_id \n"
+                + "from plant p,soort s,groep g, familie f, soort_boom sb\n"
                 + "where p.soort_id = s.id\n"
                 + "and p.groep_id = g.id\n"
-                + "and p.familie_id = f.id;";
+                + "and p.familie_id = f.id\n"
+                + "and p.soort_boom_id = sb.id;";
         try (Connection conn = tuinDB.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(addPlant)) {
 
@@ -178,6 +184,8 @@ public class Dao {
                 plant.setFamilieNaam(rs.getString(11));
                 plant.setIsActive(rs.getInt(12));
                 plant.setFotos(getPictures(plant));
+                plant.setSoortBoomNaam(rs.getString(13));
+                plant.setSoortBoom(rs.getInt(14));
                 planten.add(plant);
             }
 
@@ -292,6 +300,28 @@ public class Dao {
             return null;
         }
     }
+    
+        public SoortBoom addSoortBoom(String naam) throws SQLException {
+        String add = "insert into soort_boom(naam) values(?);";
+        String getNew = "select id,naam from soort_boom where naam=?;";
+
+        try (Connection conn = tuinDB.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(add);
+                PreparedStatement stmt2 = conn.prepareStatement(getNew);) {
+            //voeg nieuwe soort toe
+            stmt.setString(1, naam);
+            stmt.execute();
+
+            //haal de gegevens van de soort op
+            stmt2.setString(1, naam);
+            ResultSet rs = stmt2.executeQuery();
+
+            if (rs.next()) {
+                return new SoortBoom(rs.getInt(1), rs.getString(2));
+            }
+            return null;
+        }
+    }
 
     public void cacheLoader() throws SQLException {
         String soortQuery = "select s.id, s.naam  from soort s";
@@ -300,10 +330,13 @@ public class Dao {
 
         String familieQuery = "select f.id, f.naam  from familie f";
 
+        String soortBoomQuery = "select sb.id, sb.naam from soort_boom sb";
+
         try (Connection conn = tuinDB.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(soortQuery);
                 PreparedStatement stmt2 = conn.prepareStatement(groepQuery);
-                PreparedStatement stmt3 = conn.prepareStatement(familieQuery);) {
+                PreparedStatement stmt3 = conn.prepareStatement(familieQuery);
+                PreparedStatement stmt4 = conn.prepareStatement(soortBoomQuery);) {
 
             /* soort */
             ResultSet rs = stmt.executeQuery();
@@ -324,6 +357,12 @@ public class Dao {
             while (rs.next()) {
                 Familie familieBean = new Familie(rs.getInt(1), rs.getString(2));
                 Cache.familie.add(familieBean);
+            }
+
+            rs = stmt4.executeQuery();
+            while (rs.next()) {
+                SoortBoom soortBoom = new SoortBoom(rs.getInt(1), rs.getString(2));
+                Cache.soortBoom.add(soortBoom);
             }
         }
 

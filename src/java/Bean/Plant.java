@@ -12,7 +12,7 @@ import java.util.ArrayList;
  *
  * @author Jx3
  */
-public class Plant implements Serializable{
+public class Plant implements Serializable {
 
     int id;
     String naam;
@@ -24,6 +24,8 @@ public class Plant implements Serializable{
     String familieNaam;
     String nldsNaam;
     String kleur;
+    int soortBoom;
+    String soortBoomNaam;
     int isActive;
     ArrayList<String> fotos;
 
@@ -37,10 +39,11 @@ public class Plant implements Serializable{
         isActive = 1;
         fotos = new ArrayList<>();
     }
-    public boolean isActive(){
-        if(isActive==1){
+
+    public boolean isActive() {
+        if (isActive == 1) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -112,11 +115,12 @@ public class Plant implements Serializable{
     public void setIsActive(int isActive) {
         this.isActive = isActive;
     }
-    public void setIsActive(boolean isActive){
-        if(isActive){
+
+    public void setIsActive(boolean isActive) {
+        if (isActive) {
             this.isActive = 1;
-        }else{
-            this.isActive = 0; 
+        } else {
+            this.isActive = 0;
         }
     }
 
@@ -148,10 +152,26 @@ public class Plant implements Serializable{
         this.familieNaam = familieNaam;
     }
 
+    public int getSoortBoom() {
+        return soortBoom;
+    }
+
+    public void setSoortBoom(int soortBoom) {
+        this.soortBoom = soortBoom;
+    }
+
+    public String getSoortBoomNaam() {
+        return soortBoomNaam;
+    }
+
+    public void setSoortBoomNaam(String soortBoomNaam) {
+        this.soortBoomNaam = soortBoomNaam;
+    }
+
     @Override
     public String toString() {
         String EMPTY = "N/A";
-        
+
         if (soortNaam != null && soortNaam.equalsIgnoreCase("")) {
             soortNaam = EMPTY;
         }
@@ -161,8 +181,11 @@ public class Plant implements Serializable{
         if (familieNaam != null && familieNaam.equalsIgnoreCase("")) {
             familieNaam = EMPTY;
         }
+        if (soortBoomNaam != null && soortBoomNaam.equalsIgnoreCase("")) {
+            soortBoomNaam = EMPTY;
+        }
 
-        return naam + " (" + nldsNaam + ") |S: " + soortNaam + " |G: " + groepNaam + " |F: " + familieNaam + " |plantID: " + id;
+        return naam + " (" + nldsNaam + ") |S: " + soortNaam + " |V: " + groepNaam + " |F: " + familieNaam + " |SB: " + soortBoomNaam + " |plantID: " + id;
     }
 
 }

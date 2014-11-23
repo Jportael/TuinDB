@@ -9,6 +9,7 @@ import Bean.Familie;
 import Bean.Groep;
 import Bean.Plant;
 import Bean.Soort;
+import Bean.SoortBoom;
 import DAO.Dao;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class Cache {
     public static ArrayList<Groep> groep = null;
     public static ArrayList<Soort> soort = null;
     public static ArrayList<Plant> planten = null;
+    public static ArrayList<SoortBoom> soortBoom = null;
 
     public static void refresh() {
         //wipe cache
@@ -30,6 +32,7 @@ public class Cache {
         groep = new ArrayList<>();
         soort = new ArrayList<>();
         planten = new ArrayList<>();
+        soortBoom = new ArrayList<>();
 
         //get data from db
         try {

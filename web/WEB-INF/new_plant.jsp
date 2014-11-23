@@ -55,7 +55,16 @@
                 });
             });
 
-
+            $(function () {
+                var availableTags = [
+            <c:forEach items = "${soort_bomen}" var = "soortBoomBean">
+                    "<c:out value="${soortBoomBean.getNaam()}"/>",
+            </c:forEach>
+                ];
+                $("#plant_soort_boom").autocomplete({
+                    source: availableTags
+                });
+            });
         </script>
 
     </head>
@@ -107,6 +116,13 @@
                     <label for="plant_soort" class="col-sm-2 control-label">Kleur</label>
                     <div class="col-sm-10">
                         <input id="plant_kleur" class="form-control" name="plant_kleur" type ="text" value="${plant.getKleur()}"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="plant_soort_boom" class="col-sm-2 control-label">Soort boom</label>
+                    <div class="col-sm-10">
+                        <input id="plant_soort_boom" class="form-control" name="plant_soort_boom" type ="text" value="${plant.getKleur()}"/>
                     </div>
                 </div>
 

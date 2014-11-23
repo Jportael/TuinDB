@@ -14,7 +14,7 @@
         <jsp:include page="head.jsp"/>
         <jsp:include page="fancybox.jsp"/>
         <jsp:include page="fileinput.jsp"/>
-                <script>
+        <script>
             //soorten
             $(function () {
                 var availableTags = [
@@ -53,19 +53,16 @@
                     source: availableTags
                 });
             });
-
             $(function () {
                 var availableTags = [
-            <c:forEach items = "${zoektermen}" var = "zoekterm">
-                    "<c:out value="${zoekterm.toString()}"/>",
+            <c:forEach items = "${soort_bomen}" var = "soortBoomBean">
+                    "<c:out value="${soortBoomBean.getNaam()}"/>",
             </c:forEach>
                 ];
-                $("#search_bar").autocomplete({
+                $("#plant_soort_boom").autocomplete({
                     source: availableTags
                 });
             });
-
-
         </script>
     </head>
     <body>
@@ -116,6 +113,14 @@
                         <input id="plant_familie" class="form-control" name="plant_familie" value="${plant.getFamilieNaam()}"/>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label for="plant_soort_boom" class="col-sm-2 control-label">Soort Boom</label>
+                    <div class="col-sm-10">
+                        <input id="plant_soort_boom" class="form-control" name="plant_soort_boom" value="${plant.getSoortBoomNaam()}"/>
+                    </div>
+                </div>
+
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">

@@ -22,20 +22,31 @@ public class Index extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Cache.refresh();
+        
+        
         //autocomplete categorien
         request.getSession().setAttribute("soorten", Cache.soort);
         request.getSession().setAttribute("groepen", Cache.groep);
         request.getSession().setAttribute("families", Cache.familie);
         request.getSession().setAttribute("soort_bomen", Cache.soortBoom);
-        
+        request.getSession().setAttribute("snoei", Cache.snoei);
+        request.getSession().setAttribute("vermeerder", Cache.vermeerder);
+
         //autocomplete search
         ArrayList<String> zoekTermen = new ArrayList<>();
         for (Plant plant : Cache.planten) {
             zoekTermen.add(plant.toString());
         }
+        
+        //statistieken
+        request.setAttribute("soortStatistic", Cache.soort.size());
+        request.setAttribute("groepStatistic", Cache.groep.size());
+        request.setAttribute("familieStatistic", Cache.familie.size());
+        request.setAttribute("plantStatistics", Cache.planten.size());
+        
+        
         request.setAttribute("zoektermen", zoekTermen);
 
-        
         request.getRequestDispatcher("WEB-INF/index.jsp").forward(request, response);
 
     }
@@ -45,10 +56,5 @@ public class Index extends HttpServlet {
             throws ServletException, IOException {
 
     }
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 
 }

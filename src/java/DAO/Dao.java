@@ -8,8 +8,11 @@ package DAO;
 import Bean.Familie;
 import Bean.Soort;
 import Bean.Groep;
+import Bean.Pit;
 import Bean.Plant;
+import Bean.Snoei;
 import Bean.SoortBoom;
+import Bean.Vermeerder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,6 +24,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import util.Cache;
+import util.Categorie;
 
 /**
  *
@@ -186,6 +190,7 @@ public class Dao {
                 plant.setFotos(getPictures(plant));
                 plant.setSoortBoomNaam(rs.getString(13));
                 plant.setSoortBoom(rs.getInt(14));
+                plant.setPit(getPlantPit(plant));
                 planten.add(plant);
             }
 
@@ -210,11 +215,51 @@ public class Dao {
         }
     }
 
+    public void addPlantVermeerder(Vermeerder vermeerder) throws SQLException {
+        String add = "insert into plant_vermeerder(plant_id,vermeerder_id,maand) values (?,?,?)";
+        try (Connection conn = tuinDB.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(add)) {
+            stmt.setInt(1, vermeerder.getPlantId());
+            stmt.setInt(2, vermeerder.getId());
+            stmt.setInt(3, vermeerder.getMaand());
+            stmt.execute();
+        }
+    }
+
+    public void addPlantSnoei(Snoei snoei) throws SQLException {
+        String add = "insert into plant_snoei(plant_id,snoei_id,maand) values (?,?,?)";
+        try (Connection conn = tuinDB.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(add)) {
+            stmt.setInt(1, snoei.getPlantId());
+            stmt.setInt(2, snoei.getId());
+            stmt.setInt(3, snoei.getMaand());
+            stmt.execute();
+        }
+    }
+
     public void deletePicture(String loc) throws SQLException {
         String add = "delete from foto where loc=?";
         try (Connection conn = tuinDB.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(add)) {
             stmt.setString(1, loc);
+            stmt.execute();
+        }
+    }
+
+    public void deletePlantVermeerder(int id) throws SQLException {
+        String add = "delete from plant_vermeerder where id=?";
+        try (Connection conn = tuinDB.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(add)) {
+            stmt.setInt(1, id);
+            stmt.execute();
+        }
+    }
+
+    public void deletePlantSnoei(int id) throws SQLException {
+        String add = "delete from plant_snoei where id=?";
+        try (Connection conn = tuinDB.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(add)) {
+            stmt.setInt(1, id);
             stmt.execute();
         }
     }
@@ -300,8 +345,8 @@ public class Dao {
             return null;
         }
     }
-    
-        public SoortBoom addSoortBoom(String naam) throws SQLException {
+
+    public SoortBoom addSoortBoom(String naam) throws SQLException {
         String add = "insert into soort_boom(naam) values(?);";
         String getNew = "select id,naam from soort_boom where naam=?;";
 
@@ -323,6 +368,103 @@ public class Dao {
         }
     }
 
+    public Vermeerder addVermeerder(String naam) throws SQLException {
+        String add = "insert into vermeerder(naam) values(?);";
+        String getNew = "select id,naam from vermeerder where naam=?;";
+
+        try (Connection conn = tuinDB.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(add);
+                PreparedStatement stmt2 = conn.prepareStatement(getNew);) {
+            //voeg nieuwe soort toe
+            stmt.setString(1, naam);
+            stmt.execute();
+
+            //haal de gegevens van de soort op
+            stmt2.setString(1, naam);
+            ResultSet rs = stmt2.executeQuery();
+
+            if (rs.next()) {
+                return new Vermeerder(rs.getInt(1), rs.getString(2));
+            }
+            return null;
+        }
+    }
+
+    public Snoei addSnoei(String naam) throws SQLException {
+        String add = "insert into snoei(naam) values(?);";
+        String getNew = "select id,naam from snoei where naam=?;";
+
+        try (Connection conn = tuinDB.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(add);
+                PreparedStatement stmt2 = conn.prepareStatement(getNew);) {
+            //voeg nieuwe soort toe
+            stmt.setString(1, naam);
+            stmt.execute();
+
+            //haal de gegevens van de soort op
+            stmt2.setString(1, naam);
+            ResultSet rs = stmt2.executeQuery();
+
+            if (rs.next()) {
+                return new Snoei(rs.getInt(1), rs.getString(2));
+            }
+            return null;
+        }
+    }
+
+    public ArrayList<Vermeerder> plantVermeerd(Plant plant) throws SQLException {
+        String plantVermeerderQuery = "select pv.id,vm.naam,pv.maand from plant_vermeerder pv, vermeerder vm where plant_id=? and pv.vermeerder_id=vm.id;";
+
+        try (Connection conn = tuinDB.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(plantVermeerderQuery);) {
+            //haal de gegevens van de soort op
+            stmt.setInt(1, plant.getId());
+            ResultSet rs = stmt.executeQuery();
+
+            ArrayList<Vermeerder> vermeerder = new ArrayList<>();
+            while (rs.next()) {
+                vermeerder.add(new Vermeerder(rs.getInt(1), rs.getString(2), rs.getInt(3)));
+            }
+            return vermeerder;
+        }
+
+    }
+
+    public ArrayList<Snoei> plantSnoei(Plant plant) throws SQLException {
+        String plantVermeerderQuery = "select ps.id,s.naam,ps.maand from plant_snoei ps, snoei s where plant_id=? and ps.snoei_id=s.id;";
+
+        try (Connection conn = tuinDB.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(plantVermeerderQuery);) {
+            //haal de gegevens van de soort op
+            stmt.setInt(1, plant.getId());
+            ResultSet rs = stmt.executeQuery();
+
+            ArrayList<Snoei> snoei = new ArrayList<>();
+            while (rs.next()) {
+                snoei.add(new Snoei(rs.getInt(1), rs.getString(2), rs.getInt(3)));
+            }
+            return snoei;
+        }
+
+    }
+
+    public ArrayList<Pit> getPlantPit(Plant plant) throws SQLException {
+        String plantPitQuery = "select pp.pit_id,pp.sub_pit_id from plant_pit pp\n"
+                + "where pp.plant_id = ?;";
+
+        try (Connection conn = tuinDB.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(plantPitQuery);) {
+            stmt.setInt(1, plant.getId());
+             ArrayList<Pit> pitList = new ArrayList<>();
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()){
+                pitList.add(Categorie.getPlantPit(plant, rs.getInt(1), rs.getInt(2)));
+            }
+            return pitList;
+        }
+        
+    }
+
     public void cacheLoader() throws SQLException {
         String soortQuery = "select s.id, s.naam  from soort s";
 
@@ -332,11 +474,23 @@ public class Dao {
 
         String soortBoomQuery = "select sb.id, sb.naam from soort_boom sb";
 
+        String vermeerderQuery = "select v.id, v.naam from vermeerder v";
+
+        String snoeiQuery = "select sn.id, sn.naam from snoei sn";
+
+        String pitQuery = "select pit.id, pit.naam from pit";
+
+        String subPitQuery = "select sp.id, sp.naam from pit_sub sp where sp.pit_id = ?";
+
         try (Connection conn = tuinDB.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(soortQuery);
                 PreparedStatement stmt2 = conn.prepareStatement(groepQuery);
                 PreparedStatement stmt3 = conn.prepareStatement(familieQuery);
-                PreparedStatement stmt4 = conn.prepareStatement(soortBoomQuery);) {
+                PreparedStatement stmt4 = conn.prepareStatement(soortBoomQuery);
+                PreparedStatement stmt5 = conn.prepareStatement(vermeerderQuery);
+                PreparedStatement stmt6 = conn.prepareStatement(snoeiQuery);
+                PreparedStatement stmt7 = conn.prepareCall(pitQuery);
+                PreparedStatement stmt8 = conn.prepareStatement(subPitQuery)) {
 
             /* soort */
             ResultSet rs = stmt.executeQuery();
@@ -363,6 +517,35 @@ public class Dao {
             while (rs.next()) {
                 SoortBoom soortBoom = new SoortBoom(rs.getInt(1), rs.getString(2));
                 Cache.soortBoom.add(soortBoom);
+            }
+
+            rs = stmt5.executeQuery();
+            while (rs.next()) {
+                Vermeerder vermeerder = new Vermeerder(rs.getInt(1), rs.getString(2));
+                Cache.vermeerder.add(vermeerder);
+            }
+
+            rs = stmt6.executeQuery();
+            while (rs.next()) {
+                Snoei snoei = new Snoei(rs.getInt(1), rs.getString(2));
+                Cache.snoei.add(snoei);
+            }
+
+            rs = stmt7.executeQuery();
+            while (rs.next()) {
+                //haal pits op
+                Pit pit = new Pit(rs.getInt(1), rs.getString(2));
+                ArrayList<Pit> subPitList = pit.getSubPit();
+                stmt8.setInt(1, pit.getId());
+                ResultSet rs2 = stmt8.executeQuery();
+                while (rs2.next()) {
+                    //haal subpits voor deze pit op
+                    Pit subPit = new Pit(rs.getInt(1), rs.getString(2));
+                    subPitList.add(subPit);
+                }
+                pit.setSubPit(subPitList);
+                Cache.pit.add(pit);
+
             }
         }
 

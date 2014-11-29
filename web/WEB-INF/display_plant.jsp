@@ -34,6 +34,7 @@
                 <th>Kleur</th>
                 <th>foto's</th>
                 <th>edit</th>
+                <th>details</th>
             </tr>
 
 
@@ -61,6 +62,9 @@
                         </div>
                     </td>
                     <td class='clickableRow' href="editplant?plant_id=${plant.getId()}">
+                        EDIT
+                    </td>
+                    <td class='clickableRow' href="plantdetails?plant_id=${plant.getId()}">
                         EDIT
                     </td>
                 </tr>

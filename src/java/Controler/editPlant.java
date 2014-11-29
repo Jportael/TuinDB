@@ -65,19 +65,14 @@ public class editPlant extends HttpServlet {
             //update in DB
             Dao.getDAO().updatePlant(plantToAdd);
 
-            //verwijder huidige plant uit de cache
-            Plant plant = Cache.getPlantById(plantToAdd.getId());
-            Cache.removePlantById(plant.getId());
-
-            //steek de geupdate plant terug in de cache
-            Cache.planten.add(plantToAdd);
+            //reload cache
+            Cache.refresh();
         } catch (SQLException ex) {
             Logger.getLogger(editPlant.class.getName()).log(Level.SEVERE, null, ex);
         }
-        ArrayList<Plant> planten = new ArrayList<>();
-        planten.add(plantToAdd);
-        request.setAttribute("gevondenPlanten", planten );
-        request.getRequestDispatcher("WEB-INF/display_plant.jsp").forward(request, response);
+
+        request.setAttribute("plant", Cache.getPlantById(plantToAdd.getId()));
+        request.getRequestDispatcher("WEB-INF/edit_plant.jsp").forward(request, response);
 
     }
 

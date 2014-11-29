@@ -7,10 +7,15 @@ package util;
 
 import Bean.Familie;
 import Bean.Groep;
+import Bean.Pit;
+import Bean.Plant;
+import Bean.Snoei;
 import Bean.Soort;
 import Bean.SoortBoom;
+import Bean.Vermeerder;
 import DAO.Dao;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,19 +27,24 @@ public class Categorie {
 
     public static Soort getSoort(String naam) {
         if (naam == null) {
+            System.out.println("soort naam nullvalue");
             return new Soort(1, "N/A");
         }
         boolean found = false;
 
         while (!found) {
             for (Soort soort : Cache.soort) {
-                if (soort.getNaam().equalsIgnoreCase(naam)) {
-                    return soort;
+                if (soort.getNaam() != null) {
+                    if (soort.getNaam().equalsIgnoreCase(naam)) {
+                        System.out.println("returning soort: " + soort.getNaam());
+                        return soort;
+                    }
                 }
             }
             newSoort(naam);
 
         }
+        System.out.println("returning soort nullvalue");
         return null;
     }
 
@@ -46,8 +56,10 @@ public class Categorie {
 
         while (!found) {
             for (Groep groep : Cache.groep) {
-                if (groep.getNaam().equalsIgnoreCase(naam)) {
-                    return groep;
+                if (groep.getNaam() != null) {
+                    if (groep.getNaam().equalsIgnoreCase(naam)) {
+                        return groep;
+                    }
                 }
             }
             newGroep(naam);
@@ -64,8 +76,10 @@ public class Categorie {
 
         while (!found) {
             for (Familie familie : Cache.familie) {
-                if (familie.getNaam().equalsIgnoreCase(naam)) {
-                    return familie;
+                if (familie.getNaam() != null) {
+                    if (familie.getNaam().equalsIgnoreCase(naam)) {
+                        return familie;
+                    }
                 }
             }
             newFamilie(naam);
@@ -82,11 +96,45 @@ public class Categorie {
 
         while (!found) {
             for (SoortBoom soortBoom : Cache.soortBoom) {
-                if (soortBoom.getNaam().equalsIgnoreCase(naam)) {
-                    return soortBoom;
+                if (soortBoom.getNaam() != null) {
+                    if (soortBoom.getNaam().equalsIgnoreCase(naam)) {
+                        return soortBoom;
+                    }
                 }
             }
             NewSoortBoom(naam);
+
+        }
+        return null;
+    }
+
+    public static Vermeerder getVermeerder(String naam) {
+        boolean found = false;
+
+        while (!found) {
+            for (Vermeerder vermeerder : Cache.vermeerder) {
+
+                if (vermeerder.getNaam().equalsIgnoreCase(naam)) {
+                    return vermeerder;
+                }
+            }
+            newVermeerder(naam);
+
+        }
+        return null;
+    }
+
+    public static Snoei getSnoei(String naam) {
+        boolean found = false;
+
+        while (!found) {
+            for (Snoei snoei : Cache.snoei) {
+
+                if (snoei.getNaam().equalsIgnoreCase(naam)) {
+                    return snoei;
+                }
+            }
+            newSnoei(naam);
 
         }
         return null;
@@ -126,6 +174,48 @@ public class Categorie {
         } catch (SQLException ex) {
             Logger.getLogger(Categorie.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private static void newVermeerder(String naam) {
+        try {
+            Vermeerder vermeerder = Dao.getDAO().addVermeerder(naam);
+            Cache.vermeerder.add(vermeerder);
+        } catch (SQLException ex) {
+            Logger.getLogger(Categorie.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private static void newSnoei(String naam) {
+        try {
+            Snoei snoei = Dao.getDAO().addSnoei(naam);
+            Cache.snoei.add(snoei);
+        } catch (SQLException ex) {
+            Logger.getLogger(Categorie.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public static  Pit getPlantPit (Plant plant, int pitId, int subPitId){
+        Pit pitFound = new Pit();
+        
+        for(Pit pit:Cache.pit){
+            if(pit.getId()==pitId){
+                //main pit
+                pitFound.setId(pit.getId());
+                pitFound.setNaam(pit.getNaam());
+                
+                loop:
+                for(Pit subPit:pit.getSubPit()){
+                    if(subPit.getId()==subPitId){
+                        //add subPit
+                        ArrayList<Pit> subPitFound = new ArrayList<>();
+                        subPitFound.add(new Pit(subPit.getId(), subPit.getNaam()));
+                        pitFound.setSubPit(subPitFound);
+                        break;
+                    }
+                }
+            }
+        }
+        return pitFound;
     }
 
 }

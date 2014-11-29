@@ -28,6 +28,8 @@ public class Plant implements Serializable {
     String soortBoomNaam;
     int isActive;
     ArrayList<String> fotos;
+    ArrayList<Pit> pit;
+    
 
     public Plant() {
         naam = "";
@@ -168,6 +170,16 @@ public class Plant implements Serializable {
         this.soortBoomNaam = soortBoomNaam;
     }
 
+    public ArrayList<Pit> getPit() {
+        return pit;
+    }
+
+    public void setPit(ArrayList<Pit> pit) {
+        this.pit = pit;
+    }
+    
+    
+
     @Override
     public String toString() {
         String EMPTY = "N/A";
@@ -185,7 +197,7 @@ public class Plant implements Serializable {
             soortBoomNaam = EMPTY;
         }
 
-        return naam + " (" + nldsNaam + ") |S: " + soortNaam + " |V: " + groepNaam + " |F: " + familieNaam + " |SB: " + soortBoomNaam + " |plantID: " + id;
+        return  groepNaam + " (" + nldsNaam + ") |S: " + soortNaam + " |v: " + naam + " |F: " + familieNaam + " |SB: " + soortBoomNaam + " |plantID: " + id;
     }
 
 }

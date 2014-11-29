@@ -61,7 +61,7 @@ public class SearchPlant extends HttpServlet {
         }
         //handler voor generieke zoekterm (zonder id)
         for (Plant plant : Cache.planten) {
-            if (plant.toString().contains(search)) {
+            if (plant.toString().equalsIgnoreCase(search)) {
                 planten.add(plant);
 
             }

@@ -70,7 +70,7 @@
     </head>
     <body>
         <jsp:include page="nav.jsp"/>
-        <div class="container">
+        <div class="container-fluid">
             <h1 class="text-center">Voeg een plant toe</h1>
             <form class="form-horizontal" role="form" id="addPlant" action="addplant" method="post" enctype="multipart/form-data">
 

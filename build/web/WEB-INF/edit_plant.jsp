@@ -67,7 +67,7 @@
     </head>
     <body>
         <jsp:include page="nav.jsp"/>
-        <div class="container">
+        <div class="container-fluid">
             <form id="editPlant" class="form-horizontal" role="form" action="editplant" method="post">
                 <h1 class="text-center">wijzig de plant</h1>
                 <input type="hidden" name="plant_id" value="${plant.getId()}"/>

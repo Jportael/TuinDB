@@ -1,2 +1,2 @@
 
-<a href="Index" class="btn btn-lg btn-primary"> <= Home</a></li>
+<a href="Index" class="btn btn-lg btn-primary"> Home</a>

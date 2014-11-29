@@ -27,8 +27,8 @@ public class Plant implements Serializable {
     int soortBoom;
     String soortBoomNaam;
     int isActive;
-    ArrayList<String> fotos;
-    ArrayList<Pit> pit;
+    ArrayList<String> fotos = new ArrayList<>();
+    ArrayList<Pit> pit = new ArrayList<>();
     
 
     public Plant() {
@@ -39,7 +39,6 @@ public class Plant implements Serializable {
         nldsNaam = "";
         kleur = "";
         isActive = 1;
-        fotos = new ArrayList<>();
     }
 
     public boolean isActive() {

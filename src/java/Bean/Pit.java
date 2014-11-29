@@ -49,6 +49,11 @@ public class Pit implements Serializable{
     public void setSubPit(ArrayList<Pit> subPit) {
         this.subPit = subPit;
     }
+
+    @Override
+    public String toString() {
+        return "Pit{" + "id=" + id + ", naam=" + naam + ", subPit=" + subPit + '}';
+    }
     
     
     

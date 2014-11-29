@@ -264,6 +264,17 @@ public class Dao {
         }
     }
 
+    public void deletePlantPit(int plantId, int pitId, int subPitId) throws SQLException {
+        String add = "delete from plant_pit where plant_id=? and pit_id=? and sub_pit_id=?";
+        try (Connection conn = tuinDB.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(add)) {
+            stmt.setInt(1, plantId);
+            stmt.setInt(2, pitId);
+            stmt.setInt(3, subPitId);
+            stmt.execute();
+        }
+    }
+
     public ArrayList<String> getPictures(Plant plant) throws SQLException {
         String add = "select loc from foto where plant_id=?";
         try (Connection conn = tuinDB.getConnection();
@@ -412,6 +423,20 @@ public class Dao {
         }
     }
 
+    public void addPlantPit(int plantId, int pitId, int subPitId) throws SQLException {
+        String add = "insert into plant_pit(plant_id,pit_id,sub_pit_id) values(?,?,?);";
+
+        try (Connection conn = tuinDB.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(add);) {
+            //voeg nieuwe soort toe
+            stmt.setInt(1, plantId);
+            stmt.setInt(2, pitId);
+            stmt.setInt(3, subPitId);
+            System.out.println(stmt.toString());
+            stmt.execute();
+        }
+    }
+
     public ArrayList<Vermeerder> plantVermeerd(Plant plant) throws SQLException {
         String plantVermeerderQuery = "select pv.id,vm.naam,pv.maand from plant_vermeerder pv, vermeerder vm where plant_id=? and pv.vermeerder_id=vm.id;";
 
@@ -455,14 +480,14 @@ public class Dao {
         try (Connection conn = tuinDB.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(plantPitQuery);) {
             stmt.setInt(1, plant.getId());
-             ArrayList<Pit> pitList = new ArrayList<>();
+            ArrayList<Pit> pitList = new ArrayList<>();
             ResultSet rs = stmt.executeQuery();
-            while(rs.next()){
-                pitList.add(Categorie.getPlantPit(plant, rs.getInt(1), rs.getInt(2)));
+            while (rs.next()) {
+                pitList.add(Categorie.getPlantPit(rs.getInt(1), rs.getInt(2)));
             }
             return pitList;
         }
-        
+
     }
 
     public void cacheLoader() throws SQLException {
@@ -535,12 +560,12 @@ public class Dao {
             while (rs.next()) {
                 //haal pits op
                 Pit pit = new Pit(rs.getInt(1), rs.getString(2));
-                ArrayList<Pit> subPitList = pit.getSubPit();
+                ArrayList<Pit> subPitList = new ArrayList<>();
                 stmt8.setInt(1, pit.getId());
                 ResultSet rs2 = stmt8.executeQuery();
                 while (rs2.next()) {
                     //haal subpits voor deze pit op
-                    Pit subPit = new Pit(rs.getInt(1), rs.getString(2));
+                    Pit subPit = new Pit(rs2.getInt(1), rs2.getString(2));
                     subPitList.add(subPit);
                 }
                 pit.setSubPit(subPitList);

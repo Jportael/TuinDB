@@ -149,11 +149,6 @@
                         <input id="input-id" type="file" name="file" class="file" value='foto' multiple/>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <input type="submit" class="btn btn-default" value="toevoegen"/>
-                    </div>
-                </div>
 
             </form>
             <c:forEach items="${plant.getFotos()}" var="fotos">

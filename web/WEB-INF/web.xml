@@ -16,6 +16,10 @@
         <servlet-name>VerwijderFoto</servlet-name>
         <servlet-class>Controler.VerwijderFoto</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditPit</servlet-name>
+        <servlet-class>Controler.EditPit</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Index</servlet-name>
         <url-pattern>/Index</url-pattern>
@@ -35,6 +39,10 @@
     <servlet-mapping>
         <servlet-name>VerwijderFoto</servlet-name>
         <url-pattern>/verwijderfoto</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditPit</servlet-name>
+        <url-pattern>/editpit</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

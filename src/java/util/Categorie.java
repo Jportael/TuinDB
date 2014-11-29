@@ -194,9 +194,9 @@ public class Categorie {
         }
     }
     
-    public static  Pit getPlantPit (Plant plant, int pitId, int subPitId){
+    public static  Pit getPlantPit (int pitId, int subPitId){
         Pit pitFound = new Pit();
-        
+
         for(Pit pit:Cache.pit){
             if(pit.getId()==pitId){
                 //main pit
@@ -207,7 +207,7 @@ public class Categorie {
                 for(Pit subPit:pit.getSubPit()){
                     if(subPit.getId()==subPitId){
                         //add subPit
-                        ArrayList<Pit> subPitFound = new ArrayList<>();
+                        ArrayList<Pit> subPitFound = subPit.getSubPit();
                         subPitFound.add(new Pit(subPit.getId(), subPit.getNaam()));
                         pitFound.setSubPit(subPitFound);
                         break;
@@ -215,6 +215,7 @@ public class Categorie {
                 }
             }
         }
+        
         return pitFound;
     }
 

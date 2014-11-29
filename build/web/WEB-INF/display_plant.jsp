@@ -33,21 +33,19 @@
                 <th>Soort Boom</th>
                 <th>Kleur</th>
                 <th>foto's</th>
-                <th>edit</th>
-                <th>details</th>
             </tr>
 
 
             <c:forEach items="${gevondenPlanten}" var="plant">
                 <tr>
-                    <td class='clickableRow' href="editplant?plant_id=${plant.getId()}">${plant.getId()}</td>
-                    <td class='clickableRow' href="editplant?plant_id=${plant.getId()}">${plant.getGroepNaam()}</td>
-                    <td class='clickableRow' href="editplant?plant_id=${plant.getId()}">${plant.getSoortNaam()}</td>
-                    <td class='clickableRow' href="editplant?plant_id=${plant.getId()}">${plant.getNaam()}</td>
-                    <td class='clickableRow' href="editplant?plant_id=${plant.getId()}">${plant.getNldsNaam()}</td>
-                    <td class='clickableRow' href="editplant?plant_id=${plant.getId()}">${plant.getFamilieNaam()}</td>
-                    <td class='clickableRow' href="editplant?plant_id=${plant.getId()}">${plant.getSoortBoomNaam()}</td>
-                    <td class='clickableRow' href="editplant?plant_id=${plant.getId()}">${plant.getKleur()}</td>
+                    <td class='clickableRow' href="plantdetails?plant_id=${plant.getId()}">${plant.getId()}</td>
+                    <td class='clickableRow' href="plantdetails?plant_id=${plant.getId()}">${plant.getGroepNaam()}</td>
+                    <td class='clickableRow' href="plantdetails?plant_id=${plant.getId()}">${plant.getSoortNaam()}</td>
+                    <td class='clickableRow' href="plantdetails?plant_id=${plant.getId()}">${plant.getNaam()}</td>
+                    <td class='clickableRow' href="plantdetails?plant_id=${plant.getId()}">${plant.getNldsNaam()}</td>
+                    <td class='clickableRow' href="plantdetails?plant_id=${plant.getId()}">${plant.getFamilieNaam()}</td>
+                    <td class='clickableRow' href="plantdetails?plant_id=${plant.getId()}">${plant.getSoortBoomNaam()}</td>
+                    <td class='clickableRow' href="plantdetails?plant_id=${plant.getId()}">${plant.getKleur()}</td>
 
 
 
@@ -60,12 +58,6 @@
                                 <a class="fancybox" rel="group" href="uploadFiles/${fotos.toString()}"><img class="img-responsive" src=<c:url value="uploadFiles/${fotos.toString()}"/> width="100"></a>
                                 </c:forEach> 
                         </div>
-                    </td>
-                    <td class='clickableRow' href="editplant?plant_id=${plant.getId()}">
-                        EDIT
-                    </td>
-                    <td class='clickableRow' href="plantdetails?plant_id=${plant.getId()}">
-                        EDIT
                     </td>
                 </tr>
             </c:forEach>

@@ -5,6 +5,7 @@
  */
 package Controler;
 
+import Bean.Pit;
 import Bean.Plant;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class Index extends HttpServlet {
         request.getSession().setAttribute("soort_bomen", Cache.soortBoom);
         request.getSession().setAttribute("snoei", Cache.snoei);
         request.getSession().setAttribute("vermeerder", Cache.vermeerder);
+        request.getSession().setAttribute("pit", Cache.pit);
 
         //autocomplete search
         ArrayList<String> zoekTermen = new ArrayList<>();
@@ -43,6 +45,16 @@ public class Index extends HttpServlet {
         request.setAttribute("groepStatistic", Cache.groep.size());
         request.setAttribute("familieStatistic", Cache.familie.size());
         request.setAttribute("plantStatistics", Cache.planten.size());
+        
+        //testblock
+        System.out.println("------------------");
+        for(Pit pit:Cache.pit){
+            System.out.println("PIT REPORT:");
+            System.out.println(pit.toString());
+        }
+        System.out.println("------------------");
+        
+        //end testblock
         
         
         request.setAttribute("zoektermen", zoekTermen);

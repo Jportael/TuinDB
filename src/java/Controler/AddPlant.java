@@ -55,9 +55,9 @@ public class AddPlant extends HttpServlet {
         plantToAdd.setNaam((String) request.getParameter("plant_naam"));
         plantToAdd.setNldsNaam((String) request.getParameter("plant_nlds_naam"));
         plantToAdd.setKleur((String) request.getParameter("plant_kleur"));
-        
+
         System.out.println(request.getParameter("plant_soort"));
-        
+
         plantToAdd.setSoort(Categorie.getSoort(request.getParameter("plant_soort")).getId());
         plantToAdd.setGroep(Categorie.getGroep(request.getParameter("plant_groep")).getId());
         plantToAdd.setFamilie(Categorie.getFamilie(request.getParameter("plant_familie")).getId());
@@ -116,15 +116,18 @@ public class AddPlant extends HttpServlet {
             Logger.getLogger(AddPlant.class.getName()).log(Level.SEVERE, null, ex);
         }
         Cache.refresh();
-        
+
         //autocomplete search
         ArrayList<String> zoekTermen = new ArrayList<>();
         for (Plant plant : Cache.planten) {
             zoekTermen.add(plant.toString());
         }
-        request.setAttribute("zoektermen", zoekTermen);
-        
-        request.getRequestDispatcher("WEB-INF/index.jsp").forward(request, response);
+
+        request.setAttribute("plant", Cache.getPlantById(plantToAdd.getId()));
+        request.setAttribute("plantId", plantToAdd.getId());
+        request.setAttribute("snoei", Cache.snoei);
+        request.setAttribute("vermeerder", Cache.vermeerder);
+        request.getRequestDispatcher("WEB-INF/plant_details.jsp").forward(request, response);
     }
 
     private String extractFileName(Part part) {

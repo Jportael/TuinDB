@@ -48,6 +48,7 @@ public class Cache {
             Dao.getDAO().cacheLoader();
             planten = Dao.getDAO().getPlants();
             System.out.println("cache refreshed");
+            System.out.println(getPlantById(15).getPit().toString());
         } catch (SQLException ex) {
             System.out.println("fout in DB " + ex.toString());
         }

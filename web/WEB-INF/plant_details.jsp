@@ -211,7 +211,7 @@
                     </tr>
                 </table>
             </div>
-            
+
 
             <div class="container-fluid">
                 <h2>PIT</h2>
@@ -224,17 +224,30 @@
                     </tr>
 
                     <c:forEach items="${plant.getPit()}" var="pits">
-                        <c:forEach items="${pits.getSubPit()}" var="subPit">
+                        <c:if test="${pits.getSubPit().size()>0}" >
+                            <c:forEach items="${pits.getSubPit()}" var="subPit">
+                                <tr>
+                                    <td>
+                                        ${pits.getNaam()}
+                                    </td>
+                                    <td>
+                                        ${subPit.getNaam()}
+                                    </td>
+                                    <td class='clickableRow' href="editpit?plantId=${plant.getId()}&pitId=${pits.getId()}&subPitId=${subPit.getId()}"><a href="editpit?plantId=${plant.getId()}&pitId=${pits.getId()}&subPitId=${subPit.getId()}"> DELETE </a></td>
+                                </tr>
+                            </c:forEach>
+                        </c:if>
+                        <c:if test="${pits.getSubPit().size()==0}" >
                             <tr>
-                                <td>
-                                    ${pits.getNaam()}
-                                </td>
-                                <td>
-                                    ${subPit.getNaam()}
-                                </td>
-                                <td class='clickableRow' href="editpit?plantId=${plant.getId()}&pitId=${pits.getId()}&subPitId=${subPit.getId()}"><a href="editpit?plantId=${plant.getId()}&pitId=${pits.getId()}&subPitId=${subPit.getId()}"> DELETE </a></td>
+                            <td>
+                                ${pits.getNaam()}
+                            </td>
+                            <td>
+                                N/A
+                            </td>
+                             <td class='clickableRow' href="editpit?plantId=${plant.getId()}&pitId=${pits.getId()}&subPitId=${subPit.getId()}"><a href="editpit?plantId=${plant.getId()}&pitId=${pits.getId()}&subPitId=${subPit.getId()}"> DELETE </a></td>
                             </tr>
-                        </c:forEach>
+                        </c:if>
                     </c:forEach>
 
                     <tr>

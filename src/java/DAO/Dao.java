@@ -124,6 +124,7 @@ public class Dao {
             stmt.setInt(8, plant.getSoortBoom());
             stmt.setInt(9, plant.getId());
 
+            System.out.println(stmt.toString());
             stmt.executeUpdate();
 
         }
@@ -203,10 +204,12 @@ public class Dao {
                 PreparedStatement stmt = conn.prepareStatement(add)) {
             System.out.println("aantal fotos: " + plant.getFotos().size());
             for (int i = 0; i < plant.getFotos().size(); i++) {
+                System.out.println(plant.getFotos().get(i));
                 stmt.setString(1, plant.getFotos().get(i));
                 stmt.setInt(2, plant.getId());
 
                 stmt.execute();
+                System.out.println("foto toegevoegd");
             }
 
         }
@@ -429,6 +432,7 @@ public class Dao {
             stmt.setInt(1, plantId);
             stmt.setInt(2, pitId);
             stmt.setInt(3, subPitId);
+            System.out.println(stmt.toString());
             stmt.execute();
         }
     }
@@ -477,7 +481,6 @@ public class Dao {
                 PreparedStatement stmt = conn.prepareStatement(plantPitQuery);) {
             stmt.setInt(1, plant.getId());
             ArrayList<Pit> pitList = new ArrayList<>();
-
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 pitList.add(Categorie.getPlantPit(rs.getInt(1), rs.getInt(2)));

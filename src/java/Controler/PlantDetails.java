@@ -34,7 +34,8 @@ public class PlantDetails extends HttpServlet {
 
         int plantId = Integer.parseInt(request.getParameter("plant_id"));
         Plant plant = Cache.getPlantById(plantId);
-
+        request.setAttribute("plant", plant);
+        
         try {
             //get vermeerders for plant
             ArrayList<Vermeerder> vermeerder = Dao.getDAO().plantVermeerd(plant);
@@ -42,15 +43,10 @@ public class PlantDetails extends HttpServlet {
             //get snoei for plant
             ArrayList<Snoei> snoei = Dao.getDAO().plantSnoei(plant);
             request.setAttribute("plantSnoei", snoei);
-            //plantpits
-            plant.setPit(new ArrayList<>());
-            plant.setPit(Dao.getDAO().getPlantPit(plant));
             
         } catch (SQLException ex) {
             Logger.getLogger(PlantDetails.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println(plant.getPit().toString());
-        request.setAttribute("plant", plant);
         request.setAttribute("plantId", plantId);
         request.setAttribute("snoei", Cache.snoei);
         request.setAttribute("vermeerder", Cache.vermeerder);

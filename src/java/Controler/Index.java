@@ -45,7 +45,18 @@ public class Index extends HttpServlet {
         request.setAttribute("groepStatistic", Cache.groep.size());
         request.setAttribute("familieStatistic", Cache.familie.size());
         request.setAttribute("plantStatistics", Cache.planten.size());
-
+        
+        //testblock
+        System.out.println("------------------");
+        for(Pit pit:Cache.pit){
+            System.out.println("PIT REPORT:");
+            System.out.println(pit.toString());
+        }
+        System.out.println("------------------");
+        
+        //end testblock
+        
+        
         request.setAttribute("zoektermen", zoekTermen);
 
         request.getRequestDispatcher("WEB-INF/index.jsp").forward(request, response);

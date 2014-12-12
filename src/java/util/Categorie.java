@@ -193,27 +193,29 @@ public class Categorie {
             Logger.getLogger(Categorie.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    public static Pit getPlantPit(int pitId, int subPitId) {
+    
+    public static  Pit getPlantPit (int pitId, int subPitId){
         Pit pitFound = new Pit();
 
-        for (Pit pit : Cache.pit) {
-            if (pit.getId() == pitId) {
+        for(Pit pit:Cache.pit){
+            if(pit.getId()==pitId){
                 //main pit
                 pitFound.setId(pit.getId());
                 pitFound.setNaam(pit.getNaam());
                 
-                for (Pit subPitFound : pit.getSubPit()) {
-                    if (subPitFound.getId() == subPitId) {
-                        ArrayList<Pit> subPitFoundArray = new ArrayList<>();
-                        subPitFoundArray.add(subPitFound);
-                        pitFound.setSubPit(subPitFoundArray);
+                loop:
+                for(Pit subPit:pit.getSubPit()){
+                    if(subPit.getId()==subPitId){
+                        //add subPit
+                        ArrayList<Pit> subPitFound = subPit.getSubPit();
+                        subPitFound.add(new Pit(subPit.getId(), subPit.getNaam()));
+                        pitFound.setSubPit(subPitFound);
+                        break;
                     }
                 }
-
             }
         }
-
+        
         return pitFound;
     }
 
